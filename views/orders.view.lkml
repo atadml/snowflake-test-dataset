@@ -144,10 +144,7 @@ view: orders {
     timeframes: [raw, time, date, week, month, quarter, year]
     sql: ${TABLE}."SERVICE_PROCESSED_AT" ;;
   }
-  dimension: total_cost {
-    type: number
-    sql: ${TABLE}."TOTAL_COST" ;;
-  }
+
   dimension: user_id {
     type: number
     # hidden: yes
@@ -158,21 +155,28 @@ view: orders {
     drill_fields: [detail*]
   }
 
+  measure: total_cost {
+    type: sum
+    drill_fields: [detail*]
+  }
+
+
+
   # ----- Sets of fields for drilling ------
   set: detail {
     fields: [
-	id,
-	promo_codes.id,
-	users.producer_name,
-	users.last_name,
-	users.id,
-	users.first_name,
-	recurring_payments.id,
-	rates.id,
-	partial_refunds.count,
-	subscriptions.count,
-	subscription_grants.count
-	]
+  id,
+  promo_codes.id,
+  users.producer_name,
+  users.last_name,
+  users.id,
+  users.first_name,
+  recurring_payments.id,
+  rates.id,
+  partial_refunds.count,
+  subscriptions.count,
+  subscription_grants.count
+  ]
   }
 
 }

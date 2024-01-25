@@ -75,29 +75,50 @@ view: users {
     # hidden: yes
     sql: ${TABLE}."USER_PLAN_ID" ;;
   }
-  measure: count {
-    type: count
+  measure: count_dist {
+    type: count_distinct
+    sql:  ${id} ;;
     drill_fields: [detail*]
+  }
+
+  measure: total_LTV {
+    type: number
+    sql: ${orders.total_cost} ;;
+  }
+
+  measure: average_LTV {
+    type: number
+    sql: ${total_LTV} / ${count_dist};;
+  }
+
+  measure: avg_lifetime {
+    type: average
+    sql: DATEDIFF(year, ${TABLE}.created_at, CURRENT_DATE()) ;;
+  }
+
+  measure: avg_yearly_value {
+    type: number
+    sql: ${average_LTV} / NULLIF(${avg_lifetime}, 0) ;;
   }
 
   # ----- Sets of fields for drilling ------
   set: detail {
     fields: [
-	id,
-	producer_name,
-	last_name,
-	first_name,
-	user_plans.id,
-	logins.count,
-	orders.count,
-	recurring_payments.count,
-	share_batches.count,
-	subscriptions.count,
-	subscription_grants.count,
-	user_demographics.count,
-	user_plans.count,
-	utm_events.count
-	]
+  id,
+  producer_name,
+  last_name,
+  first_name,
+  user_plans.id,
+  logins.count,
+  orders.count,
+  recurring_payments.count,
+  share_batches.count,
+  subscriptions.count,
+  subscription_grants.count,
+  user_demographics.count,
+  user_plans.count,
+  utm_events.count
+  ]
   }
 
 }
