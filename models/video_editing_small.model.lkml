@@ -12,7 +12,6 @@ persist_with: video_editing_small_default_datagroup
 
 explore: analytics_events {}
 
-explore: connection_reg_r3 {}
 
 explore: formats {
   join: shares {
